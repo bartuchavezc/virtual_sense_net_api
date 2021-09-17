@@ -1,0 +1,33 @@
+name: Node CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [8.x, 10.x, 12.x]
+        postgresql-version: [11, 12]
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Launch PostgreSQL
+        uses: harmon758/postgresql-action@v1
+        with:
+          postgresql version: ${{ matrix.postgresql-version }}
+          postgresql db: test
+          postgresql user: postgres
+          postgresql password: postgres
+      - name: npm install, build, and test
+        run: |
+          npm install
+          npm run build --if-present
+          npm test
+        env:
+          CI: true
