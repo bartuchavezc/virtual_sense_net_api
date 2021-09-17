@@ -1,0 +1,20 @@
+services:
+  Mooc.courses.CourseRepository:
+    class: ../../../../Contexts/Mooc/Courses/infrastructure/FileCourseRepository
+    arguments: []
+
+  Mooc.courses.CourseCreator:
+    class: ../../../../Contexts/Mooc/Courses/application/CourseCreator
+    arguments: ["@Mooc.courses.CourseRepository"]
+
+  Mooc.shared.Logger:
+    class: ../../../../Contexts/Shared/infrastructure/WinstonLogger
+    arguments: []
+
+  Apps.mooc.controllers.CoursePutController:
+    class: ../../controllers/CoursePutController
+    arguments: ["@Mooc.courses.CourseCreator"]
+
+  Apps.mooc.controllers.StatusGetController:
+    class: ../../controllers/StatusGetController
+    arguments: []
